@@ -1,6 +1,6 @@
 # Bioinformatics_Programming
 
-##생명과학II
+## 생명과학II
   
 ### 1. codon translate
 라이브러리 사용X  
