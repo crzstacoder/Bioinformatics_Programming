@@ -139,3 +139,5 @@ if rightRNA == True :
             print(amino[newRNA[i]], '-', end = "")
 else :
     pass
+
+# coding from crzstarcoder
