@@ -1,5 +1,7 @@
-from flask import Flask, request
+from distutils.log import error
+from flask import Flask, request, Response, jsonify
 import pymysql
+from portfolio.database import DBmanager
 # connect mySQL DB ---------------------------------------------
 portfolio_db = pymysql.connect(
     user = 'root',
@@ -12,11 +14,23 @@ portfolio_db = pymysql.connect(
 cursor = portfolio_db.cursor(pymysql.cursors.DictCursor)
 # ---------------------------------------------------------------------
 
-sql = "INSERT INTO USER (user_id, user_mRNA) VALUES()"
-
-
-
 app = Flask(__name__)
+
+#get
+@app.route('/user/<param>') 
+def get_user(param):
+    return jsonify({"param": param})
+
+#post
+@app.route('/userinfo', methods=['POST']) 
+def post_userinfo():
+    data = json.loads(request.data)
+    param = request.get_json()
+
+    
+    return jsonify(param)
+
+
 
 @app.route('/')
 def mainstring() :
