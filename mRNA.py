@@ -4,7 +4,7 @@ num_ = int(input())
 
 base = ['A', 'C', 'G', 'U']
 
-mRNA = ['AUG']
+mRNA = []
 
 for i in range(num_) :
     randomint = randint(0,3)

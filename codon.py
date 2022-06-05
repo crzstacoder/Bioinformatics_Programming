@@ -1,5 +1,8 @@
 
 #코돈표 작성
+from sys import exit
+import pdb
+
 amino = {
     "UUU" : 'phenylalanine',
     "UUC" : 'phenylalanine',
@@ -83,7 +86,6 @@ for i in range(len(mRNA)) :
         print('mRNA 염기서열이 아닙니다.')
         break
 
-
 #rightRNA가 True일 경우 개시코돈 파인딩 로직 작동
 #연속적으로 A,U,G 존재할 때 반복문 중지 
 #개시코돈이 없을 경우 오류 메세지 출력
@@ -92,11 +94,11 @@ if rightRNA == True :
 
     #개시코돈 찾기
     for i in range(len(mRNA)) :
-        if mRNA[len(mRNA)-2] == "A" :
+        if i == len(mRNA)-2 :
             print('개시코돈이 존재하지 않습니다.')
             rightRNA = False
             break
-        elif mRNA[i] == 'A' :
+        if mRNA[i] == 'A' :
             if mRNA[i + 1] == 'U' :
                 if mRNA[i + 2] =='G' :
                     break
@@ -105,7 +107,7 @@ if rightRNA == True :
             else :
                 count_ += 1
         else :
-            if i == len(mRNA) :
+            if i == len(mRNA)-1 :
                 print('개시코돈이 존재하지 않습니다.')
                 rightRNA = False
                 break
@@ -120,22 +122,32 @@ if rightRNA == True :
         mRNA1.append(mRNA[i])
 
     #염기서열을 3개씩 묶어 코돈으로 만들어주기 위해서 리스트 길이를 3의 배수로 맞춰줌. --> pop()을 사용하여 맨 뒤의 나머지 염기 제거
-    if (len(mRNA1) + 1 - count_)%3 != 0 :
-        for i in range((len(mRNA1) - count_)%3) :
-            mRNA1.pop()
+    # if (len(mRNA1) + 1 - count_)%3 != 0 :
+    #     for i in range((len(mRNA1) - count_)%3) :
+    #         mRNA1.pop()
+    while len(mRNA1)%3 == 0 :
+        mRNA1.pop()
     
     #염기서열을 3개씩 묶어 코도능로 만들어줌
     newRNA = []
+
+    # try :
     for i in range(0,len(mRNA1)-1,3) :
+        if len(newRNA) == len(mRNA1)//3 :
+            break
         codon = mRNA1[i] + mRNA1[i+1] + mRNA1[i+2]
         newRNA.append(codon)
+        
+    # except IndexError :
+    #     print('종결코돈이 존재하지 않습니다.')
+    #     exit()
     
     #코돈을 해석한 아미노산들을 출력, 종결코돈이 나오면 멈춘다.
     for i in range(len(newRNA)) :
         if newRNA[i] == 'UAA' or newRNA[i] == 'UGA' or newRNA[i] == 'UAG' :
             break
         else :
-            print(amino[newRNA[i]], '-', end = "")
+            print(amino[newRNA[i]], '-', end = " ")
 else :
     pass
 

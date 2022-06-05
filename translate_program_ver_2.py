@@ -1,7 +1,6 @@
 from distutils.log import error
 from flask import Flask, request, Response, jsonify
 import pymysql
-from portfolio.database import DBmanager
 # connect mySQL DB ---------------------------------------------
 portfolio_db = pymysql.connect(
     user = 'root',
@@ -24,7 +23,7 @@ def get_user(param):
 #post
 @app.route('/userinfo', methods=['POST']) 
 def post_userinfo():
-    data = json.loads(request.data)
+    data = data.loads(request.data)
     param = request.get_json()
 
     
