@@ -74,6 +74,8 @@ amino = {
 #작동 확인됨
 mRNA = list(input().upper())
 
+#테스트용
+
 
 #코드 진행을 위한 상태 저장 ( 참 )
 rightRNA = True
