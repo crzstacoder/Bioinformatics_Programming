@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 import pymysql
 from codon_forupgrade import translating
@@ -13,31 +14,31 @@ portfolio_db = pymysql.connect(
 cur = portfolio_db.cursor(pymysql.cursors.DictCursor)
 # ---------------------------------------------------------------------
 
+
 app = Flask(__name__)
+
 
 sql = """SELECT * FROM USER"""
 cur.execute(sql)
 M = cur.fetchall()
-USER = {}
-for i in M :
-    USER[i[0]] = {
-        "user_mRNA" : i[1]
-        }
-
+USER = {}   
 #post
 @app.route('/insertinfo', methods=['POST']) 
 def post_userinfo():
-    request_data = request.get_json()
+    request_data = request.form
     id = len(USER)+1
     user_mRNA = request_data['user_mRNA']
+
+    user_id = request_data["user_id"]
+    translated = translating(user_mRNA)
     
     print(user_mRNA)
 
-    sql = """INSERT INTO USER VALUES('%d','%s','%s')"""%(id, user_mRNA, translating(user_mRNA))
+    sql = """INSERT INTO USER VALUES('%s','%s','%s')"""%(user_id, user_mRNA, translated)
     cur.execute(sql)
     portfolio_db.commit()
     
-    return jsonify(USER[id])
+    return jsonify()
 
 
 
