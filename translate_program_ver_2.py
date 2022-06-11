@@ -1,6 +1,6 @@
-from distutils.log import error
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, jsonify
 import pymysql
+from codon_forupgrade import translating
 # connect mySQL DB ---------------------------------------------
 portfolio_db = pymysql.connect(
     user = 'root',
@@ -10,24 +10,34 @@ portfolio_db = pymysql.connect(
     charset = 'utf8'
 )
 # 딕셔너리형태 설정-----------------------------------------------------
-cursor = portfolio_db.cursor(pymysql.cursors.DictCursor)
+cur = portfolio_db.cursor(pymysql.cursors.DictCursor)
 # ---------------------------------------------------------------------
 
 app = Flask(__name__)
 
-#get
-@app.route('/user/<param>') 
-def get_user(param):
-    return jsonify({"param": param})
+sql = """SELECT * FROM USER"""
+cur.execute(sql)
+M = cur.fetchall()
+USER = {}
+for i in M :
+    USER[i[0]] = {
+        "user_mRNA" : i[1]
+        }
 
 #post
-@app.route('/userinfo', methods=['POST']) 
+@app.route('/insertinfo', methods=['POST']) 
 def post_userinfo():
-    data = data.loads(request.data)
-    param = request.get_json()
-
+    request_data = request.get_json()
+    id = len(USER)+1
+    user_mRNA = request_data['user_mRNA']
     
-    return jsonify(param)
+    print(user_mRNA)
+
+    sql = """INSERT INTO USER VALUES('%d','%s','%s')"""%(id, user_mRNA, translating(user_mRNA))
+    cur.execute(sql)
+    portfolio_db.commit()
+    
+    return jsonify(USER[id])
 
 
 
